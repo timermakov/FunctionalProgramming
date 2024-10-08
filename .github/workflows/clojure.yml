@@ -27,5 +27,7 @@ jobs:
           curl https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein > lein
           chmod +x lein
           sudo mv lein /usr/local/bin/
-      - name: Test Lab1
-        run: lein test
+      - name: Test Problem7
+        run: cd lab1/problem7 lein test 
+      - name: Test Problem26
+        run: cd lab1/problem26 lein test 
