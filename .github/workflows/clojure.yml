@@ -28,6 +28,10 @@ jobs:
           chmod +x lein
           sudo mv lein /usr/local/bin/
       - name: Test Problem7
-        run: cd lab1/problem7 lein test 
+        run: |
+              cd lab1/problem7 
+              lein test 
       - name: Test Problem26
-        run: cd lab1/problem26 lein test 
+        run: |
+              cd lab1/problem26 
+              lein test 
