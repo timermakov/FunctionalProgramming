@@ -2,19 +2,12 @@
   (:gen-class))
 
 ; Монолитная реализация с использованием хвостовой рекурсии
-(defn nth-prime-tail-recursion [n]
-  (loop [count 0
-         num 2]
-    (let [is-prime (loop [i 2]
-                     (cond
-                       (> (* i i) num) true
-                       (zero? (mod num i)) false
-                       :else (recur (inc i))))]
-      (if (= count n)
-        (dec num)
-        (if is-prime
-          (recur (inc count) (inc num))
-          (recur count (inc num)))))))
+(defn nth-prime-tail-recursion [n count num divisor]
+  (cond
+    (= count n) (dec num)
+    (> divisor (Math/sqrt num)) (recur n (inc count) (inc num) 2)
+    (zero? (mod num divisor)) (recur n count (inc num) 2)
+    :else (recur n count num (inc divisor))))
 
 ; Монолитная реализация с использованием рекурсии 
 (defn nth-prime-recursion [n]
@@ -23,22 +16,23 @@
               true
               (if (zero? (mod num divisor))
                 false
-                #(is-prime? num (inc divisor)))))  ; Return a function for trampoline
+                #(is-prime? num (inc divisor)))))
           (find-prime [count num]
             (if (= count n)
-              #(dec num)  ; Return a function that returns (dec num)
+              #(dec num)
               (if (trampoline is-prime? num 2)
                 #(find-prime (inc count) (inc num))
                 #(find-prime count (inc num)))))]
-    (trampoline find-prime 0 2)))  ; Start count at 0
+    (trampoline find-prime 0 2)))
 
 ; Модульная реализация с использованием filter
 (defn is-prime? [n]
-  (loop [divisor 2]
-    (cond
-      (> (* divisor divisor) n) true
-      (zero? (mod n divisor)) false
-      :else (recur (inc divisor)))))
+  (letfn [(check [divisor]
+            (cond
+              (> (* divisor divisor) n) true
+              (zero? (mod n divisor)) false
+              :else (check (inc divisor))))]
+    (check 2)))
 
 (defn nth-prime-modular [n]
   (nth (filter is-prime? (iterate inc 2)) (dec n)))
@@ -70,7 +64,7 @@
   "Solutions for problem 7"
   [& args]
   (println "Monolith tail recursion:")
-  (println (nth-prime-tail-recursion 10001))
+  (println (nth-prime-tail-recursion 10001 0 2 2))
   (println "Monolith non-tail recursion:")
   (println (nth-prime-recursion 10001))
   (println "Modular:")

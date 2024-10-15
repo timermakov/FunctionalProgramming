@@ -14,8 +14,8 @@
 
 (deftest test-recurring-tail-recursion
   (testing "recurring-tail-recursion"
-    (is (= 7 (recurring-tail-recursion 10)))
-    (is (= 983 (recurring-tail-recursion 1000)))))
+    (is (= 7 (recurring-tail-recursion 2 10 0 0)))
+    (is (= 983 (recurring-tail-recursion 2 1000 0 0)))))
 
 (deftest test-recurring-recursion
   (testing "recurring-recursion"

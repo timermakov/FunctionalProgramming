@@ -4,8 +4,8 @@
 
 (deftest test-nth-prime-tail-recursion
   (testing "nth-prime-tail-recursion"
-    (is (= 13 (nth-prime-tail-recursion 6)))
-    (is (= 104743 (nth-prime-tail-recursion 10001)))))
+    (is (= 13 (nth-prime-tail-recursion 6 0 2 2)))
+    (is (= 104743 (nth-prime-tail-recursion 10001 0 2 2)))))
 
 (deftest test-nth-prime-recursion
   (testing "nth-prime-recursion"

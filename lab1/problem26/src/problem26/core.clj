@@ -11,16 +11,13 @@
     (cycle-length 1 {} 0)))
 
 ; Монолитная реализация с использованием хвостовой рекурсии
-(defn recurring-tail-recursion [limit]
-  (loop [d 2
-         max-d 0
-         max-len 0]
-    (if (>= d limit)
-      max-d
-      (let [len (recurring-cycle-length d)]
-        (if (> len max-len)
-          (recur (inc d) d len)
-          (recur (inc d) max-d max-len))))))
+(defn recurring-tail-recursion [d limit max-d max-len]
+  (if (>= d limit)
+    max-d
+    (let [len (recurring-cycle-length d)]
+      (if (> len max-len)
+        (recur (inc d) limit d len)
+        (recur (inc d) limit max-d max-len)))))
 
 ; Монолитная реализация с использованием рекурсии 
 (defn recurring-recursion [d limit max-d max-len]
@@ -32,16 +29,25 @@
         (recurring-recursion (inc d) limit max-d max-len)))))
 
 ; Модульная реализация с использованием filter
+(defn generate-cycle-lengths [limit]
+  (map (fn [d] [d (recurring-cycle-length d)]) (range 2 limit)))
+
+(defn filter-non-zero-cycles [pairs]
+  (filter (fn [[_ length]] (pos? length)) pairs))
+
+(defn find-max-cycle [pairs]
+  (reduce (fn [max-pair current-pair]
+            (if (> (second current-pair) (second max-pair))
+              current-pair
+              max-pair))
+          [0 0]
+          pairs))
+
 (defn recurring-modular [limit]
-  (let [denominators (range 2 limit)
-        lengths (map (fn [d] [d (recurring-cycle-length d)]) denominators)
-        filtered-lengths (filter (fn [[_ len]] (pos? len)) lengths)]
-    (first (reduce (fn [max-pair current-pair]
-                     (if (> (second current-pair) (second max-pair))
-                       current-pair
-                       max-pair))
-                   [0 0]
-                   filtered-lengths))))
+  (let [pairs (generate-cycle-lengths limit)
+        filtered-pairs (filter-non-zero-cycles pairs)
+        [d _] (find-max-cycle filtered-pairs)]
+    d))
 
 ; Генерация последовательности при помощи отображения (map)
 (defn recurring-map [limit]
@@ -69,11 +75,11 @@
     (first (apply max-key second (pairs)))))
 
 (defn -main
-  "Solutions for problem 7"
+  "Solutions for problem 26"
   [& args]
   (println "Monolith tail recursion:")
-  (println (recurring-tail-recursion 1000))
-  (println "Monlith recursion:")
+  (println (recurring-tail-recursion 2 1000 0 0))
+  (println "Monolith recursion:")
   (println (recurring-recursion 2 1000 0 0))
   (println "Modular:")
   (println (recurring-modular 1000))
