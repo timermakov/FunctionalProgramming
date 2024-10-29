@@ -1,6 +1,6 @@
 (ns rb-tree.core-test
-  (:require [clojure.test :refer :all]
-            [rb-tree.core :refer :all]
+  (:require [clojure.test :refer [deftest is testing]]
+            [rb-tree.core :refer [delete filter-tree foldl foldr insert leaf? make-leaf tree-values union valid-red-black-tree?]]
             [clojure.test.check.generators :as gen]
             [clojure.test.check.properties :refer [for-all]]
             [clojure.test.check.clojure-test :refer [defspec]]))
@@ -35,21 +35,21 @@
 
 (defspec prop-insert-maintains-tree-properties
   10
-  (for-all [values (gen/vector gen/int)]
+  (for-all [values (gen/vector gen/small-integer)]
            (let [tree (reduce insert (make-leaf) values)]
              (valid-red-black-tree? tree))))
 
 (defspec prop-delete-removes-element
   10
-  (for-all [value gen/int]
+  (for-all [value gen/small-integer]
            (let [tree (insert (make-leaf) value)
                  new-tree (delete tree value)]
              (leaf? new-tree))))
 
 (defspec prop-union-contains-all-elements
   10
-  (for-all [values1 (gen/vector gen/int)
-            values2 (gen/vector gen/int)]
+  (for-all [values1 (gen/vector gen/small-integer)
+            values2 (gen/vector gen/small-integer)]
            (let [tree1 (reduce insert (make-leaf) values1)
                  tree2 (reduce insert (make-leaf) values2)
                  union-tree (union tree1 tree2)
