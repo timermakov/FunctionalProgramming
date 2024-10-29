@@ -1,5 +1,4 @@
-(ns rb-tree.core
-  (:import [java.lang Comparable]))
+(ns rb-tree.core)
 
 (defrecord Node [color value left right])
 
