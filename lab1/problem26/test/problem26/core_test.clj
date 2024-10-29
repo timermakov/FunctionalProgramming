@@ -1,6 +1,6 @@
 (ns problem26.core-test
-  (:require [clojure.test :refer :all]
-            [problem26.core :refer :all]))
+  (:require [clojure.test :refer [deftest is testing]]
+            [problem26.core :refer [recurring-cycle-length recurring-for recurring-iterator recurring-map recurring-modular recurring-recursion recurring-tail-recursion]]))
 
 (deftest test-recurring-cycle-length
   (testing "recurring-cycle-length"

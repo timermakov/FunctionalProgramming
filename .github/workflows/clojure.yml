@@ -28,12 +28,12 @@ jobs:
       - name: Lint lab1 - problem7
         run: |
               cd lab1/problem7 
-              clj-kondo --lint src
+              clj-kondo --lint .
 
       - name: Lint lab1 - problem26
         run: |
               cd lab1/problem26
-              clj-kondo --lint src
+              clj-kondo --lint .
               
       - name: Test lab1 - problem7
         run: |
@@ -48,7 +48,7 @@ jobs:
       - name: Lint lab2
         run: |
               cd lab2/rb-tree
-              clj-kondo --lint src
+              clj-kondo --lint .
               
       - name: Test lab2 - rb-tree
         run: |

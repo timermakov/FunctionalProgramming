@@ -1,6 +1,6 @@
 (ns problem7.core-test
-  (:require [clojure.test :refer :all]
-            [problem7.core :refer :all]))
+  (:require [clojure.test :refer [deftest is testing]]
+            [problem7.core :refer [nth-prime-for nth-prime-lazy nth-prime-map nth-prime-modular nth-prime-recursion nth-prime-tail-recursion]]))
 
 (deftest test-nth-prime-tail-recursion
   (testing "nth-prime-tail-recursion"
