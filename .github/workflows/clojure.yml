@@ -16,22 +16,41 @@ jobs:
           clj-kondo: latest
           cljfmt: latest
 
-      - name: Check format
-        run: cljfmt fix
-
-      - name: Lint lab1
-        run: clj-kondo
-
       - name: Install Leiningen
         run: |
           curl https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein > lein
           chmod +x lein
           sudo mv lein /usr/local/bin/
-      - name: Test Problem7
+          
+      - name: Check format
+        run: cljfmt fix
+
+      - name: Lint lab1 - problem7
+        run: |
+              cd lab1/problem7 
+              clj-kondo --lint src
+
+      - name: Lint lab1 - problem26
+        run: |
+              cd lab1/problem26
+              clj-kondo --lint src
+              
+      - name: Test lab1 - problem7
         run: |
               cd lab1/problem7 
               lein test 
-      - name: Test Problem26
+              
+      - name: Test lab1 - problem26
         run: |
               cd lab1/problem26 
               lein test 
+
+      - name: Lint lab2
+        run: |
+              cd lab2/rb-tree
+              clj-kondo --lint src
+              
+      - name: Test lab2 - rb-tree
+        run: |
+              cd lab2/rb-tree 
+              lein test
