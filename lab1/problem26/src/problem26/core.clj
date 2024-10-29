@@ -63,20 +63,20 @@
 
 ; Итератор
 (defn recurring-iterator [limit]
-  (let [state (atom 1)]
-    (defn next-pair []
-      (let [d (swap! state inc)]
-        (when (< d limit)
-          [d (recurring-cycle-length d)])))
-    (defn pairs []
-      (lazy-seq
-       (when-let [pair (next-pair)]
-         (cons pair (pairs)))))
+  (let [state (atom 1)
+        next-pair (fn []
+                    (let [d (swap! state inc)]
+                      (when (< d limit)
+                        [d (recurring-cycle-length d)])))
+        pairs (fn pairs []
+                (lazy-seq
+                 (when-let [pair (next-pair)]
+                   (cons pair (pairs)))))]
     (first (apply max-key second (pairs)))))
 
 (defn -main
   "Solutions for problem 26"
-  [& args]
+  []
   (println "Monolith tail recursion:")
   (println (recurring-tail-recursion 2 1000 0 0))
   (println "Monolith recursion:")

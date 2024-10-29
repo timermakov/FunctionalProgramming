@@ -62,7 +62,7 @@
 
 (defn -main
   "Solutions for problem 7"
-  [& args]
+  []
   (println "Monolith tail recursion:")
   (println (nth-prime-tail-recursion 10001 0 2 2))
   (println "Monolith non-tail recursion:")
