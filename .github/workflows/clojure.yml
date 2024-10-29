@@ -48,7 +48,7 @@ jobs:
       - name: Lint lab2
         run: |
               cd lab2/rb-tree
-              clj-kondo --lint .
+              clj-kondo --lint . --config .clj-kondo/config.edn
               
       - name: Test lab2 - rb-tree
         run: |
