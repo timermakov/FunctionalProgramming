@@ -1,4 +1,5 @@
-(ns rb-tree.core)
+(ns rb-tree.core
+  (:import [java.lang Comparable]))
 
 (defrecord Node [color value left right])
 
@@ -52,8 +53,8 @@
               (make-node :red value (make-leaf) (make-leaf))
               (let [node-value (:value node)]
                 (cond
-                  (< value node-value) (balance (:color node) node-value (ins (:left node)) (:right node))
-                  (> value node-value) (balance (:color node) node-value (:left node) (ins (:right node)))
+                  (< (compare value node-value) 0) (balance (:color node) node-value (ins (:left node)) (:right node))
+                  (> (compare value node-value) 0) (balance (:color node) node-value (:left node) (ins (:right node)))
                   :else node))))]
     (let [new-tree (ins tree)]
       (make-node :black (:value new-tree) (:left new-tree) (:right new-tree))))) ; ensure root is black
@@ -79,8 +80,8 @@
               node
               (let [node-value (:value node)]
                 (cond
-                  (< value node-value) (balance (:color node) node-value (del (:left node)) (:right node))
-                  (> value node-value) (balance (:color node) node-value (:left node) (del (:right node)))
+                  (< (compare value node-value) 0) (balance (:color node) node-value (del (:left node)) (:right node))
+                  (> (compare value node-value) 0) (balance (:color node) node-value (:left node) (del (:right node)))
                   :else (if (leaf? (:left node))
                           (:right node)
                           (let [max-left (find-max (:left node))]

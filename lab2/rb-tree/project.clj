@@ -7,4 +7,5 @@
                  [org.clojure/test.check "1.1.0"]]
   :main ^:skip-aot rb-tree.core
   :target-path "target/%s"
-  :profiles {:uberjar {:aot :all}})
+  :profiles {:uberjar {:aot :all}}
+  :java-source-paths ["src/java"])
