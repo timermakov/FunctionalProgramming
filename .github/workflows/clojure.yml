@@ -54,3 +54,8 @@ jobs:
         run: |
               cd lab2/rb-tree 
               lein test
+
+      - name: Lint lab3
+        run: |
+              cd lab3/interpolation
+              clj-kondo --lint . 
