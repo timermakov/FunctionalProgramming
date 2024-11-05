@@ -1,6 +1,7 @@
 (ns interpolation.core
   (:require [clojure.string :as str]
             [clojure.tools.cli :refer [parse-opts]]
+            [clojure.java.io :as io]
             [interpolation.input :refer [parse-point]]
             [interpolation.interpolation :refer [linear-interpolation lagrange-interpolation interpolate-series]])
   (:import (java.util Locale)))
