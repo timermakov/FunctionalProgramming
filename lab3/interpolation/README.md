@@ -54,6 +54,26 @@ Linear interpolation result:
 2.38    16.48
 ```
 
+```
+lein run interpolation.core.main -a linear -a lagrange 
+1.0;2.2
+2.2;3.3
+Linear interpolation result:
+1.00    2.00    3.00
+2.20    3.12    4.03
+3.3;4.2
+Linear interpolation result:
+2.20    3.20    4.20
+3.30    4.12    4.94
+5.2;6.7
+Linear interpolation result:
+3.30    4.30    5.30
+4.20    5.52    6.83
+Lagrange interpolation result:
+1.00    2.00    3.00    4.00    5.00    6.00
+2.20    3.14    3.94    4.91    6.33    8.52
+```
+
 # Выводы
 В ходе выполнения лабораторной работы были реализованы два метода интерполяции: линейная интерполяция и интерполяция методом Лагранжа. 
 
