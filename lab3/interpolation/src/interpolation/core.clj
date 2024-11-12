@@ -53,7 +53,7 @@
 (defn print-values [key result]
   (println (str/join "\t" (map #(String/format Locale/ENGLISH "%.2f" (to-array [(key %)])) result))))
 
-(defn process-line [line points max-window-size options]
+(defn process-line [line points max-window-size]
   (let [point (parse-point line)
         new-points (conj points point)]
     (if (> (count new-points) max-window-size)
@@ -77,6 +77,7 @@
         (with-open [rdr (clojure.java.io/reader *in*)]
           (loop [points []]
             (if-let [line (first (line-seq rdr))]
-              (let [new-points (process-line line points max-window-size options)]
+              (let [new-points (process-line line points max-window-size)]
                 (process-algorithms new-points options)
-                (recur new-points)))))))))
+                (recur new-points))
+              (println "No more lines to process."))))))))
