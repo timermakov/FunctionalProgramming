@@ -53,22 +53,30 @@
 (defn print-values [key result]
   (println (str/join "\t" (map #(String/format Locale/ENGLISH "%.2f" (to-array [(key %)])) result))))
 
+(defn process-line [line points max-window-size options]
+  (let [point (parse-point line)
+        new-points (conj points point)]
+    (if (> (count new-points) max-window-size)
+      (rest new-points)
+      new-points)))
+
+(defn process-algorithms [points options]
+  (doseq [algorithm-name (:algorithms options)]
+    (let [window-size (get-in algorithms [algorithm-name :window-size])]
+      (when (>= (count points) window-size)
+        (let [result (interpolate-series points (:step options) window-size (get-in algorithms [algorithm-name :interpolate]))]
+          (println (str (str/capitalize algorithm-name) " interpolation result:"))
+          (print-values :x result)
+          (print-values :y result))))))
+
 (defn -main [& args]
   (let [{:keys [options exit-message]} (validate-args args)]
     (if exit-message
       (println exit-message)
-      (let [max-window-size (find-max-window-size (:algorithms options))
-            points (atom [])]
+      (let [max-window-size (find-max-window-size (:algorithms options))]
         (with-open [rdr (clojure.java.io/reader *in*)]
-          (doseq [line (line-seq rdr)]
-            (let [point (parse-point line)]
-              (swap! points conj point)
-              (when (> (count @points) max-window-size)
-                (swap! points rest))
-              (doseq [algorithm-name (:algorithms options)]
-                (let [window-size (get-in algorithms [algorithm-name :window-size])]
-                  (when (>= (count @points) window-size)
-                    (let [result (interpolate-series @points (:step options) window-size (get-in algorithms [algorithm-name :interpolate]))]
-                      (println (str (str/capitalize algorithm-name) " interpolation result:"))
-                      (print-values :x result)
-                      (print-values :y result))))))))))))
+          (loop [points []]
+            (if-let [line (first (line-seq rdr))]
+              (let [new-points (process-line line points max-window-size options)]
+                (process-algorithms new-points options)
+                (recur new-points)))))))))
